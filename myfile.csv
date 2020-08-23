@@ -1,0 +1,102 @@
+import csv
+import os
+def searchrec():
+    file=open("student.csv","r")
+    pos=0
+    r=int(input("enter rno to search"))
+    csv_reader=csv.reader(file)
+    found=0
+    try:
+        for row in csv_reader: 
+            if csv_reader.line_num==1:
+                continue
+            else:
+                pos=pos+1
+                if int(row[0])==r:
+                    print("Record found in position:", pos )
+                    print("Name: ",row[1],"  Marks: ",row[2])
+                    found=1
+                    break
+    except EOFError:
+        pass
+    if found==0:
+        print("Record not found")
+    file.close()        
+   
+def updaterec():    
+    n=int(input("enter roll number to update"))
+    mark=float(input("enter new marks"))
+    f=open("student.csv","r")
+    g=open("temp.csv","w",newline='') 
+    csv_writer=csv.writer(g,delimiter=',')
+    csv_reader=csv.reader(f,delimiter=',')
+    for x in  csv_reader:
+        if x[0]==str(n):
+            x[2]=str(mark)
+            csv_writer.writerow(x)
+        else:
+            csv_writer.writerow(x)
+    f.close()
+    g.close()
+    os.remove("student.csv")
+    os.rename("temp.csv","student.csv")
+    print("RECORD UPDATED..... IF YOU WANT TO SEE, SELECT OPTION 2..")
+
+def writerec():
+    with open("student.csv","w",newline='') as f:
+        csv_writer=csv.writer(f,delimiter=',')
+        x=['rno','name','marks']
+        csv_writer.writerow(x)
+        n=int(input("how many students"))
+        for i in range(n):
+            l=[]
+            r=int(input("enter rno"))
+            l.append(r)
+            n=input("enter name")
+            l.append(n)
+            m=float(input("enter marks"))
+            l.append(m)
+            csv_writer.writerow(l)
+            
+def appendrec():
+    with open("student.csv","a",newline='') as f:
+        csv_writer=csv.writer(f,delimiter=',')
+        n=int(input("how many students"))
+        for i in range(n):
+            l=[]
+            r=int(input("enter rno"))
+            l.append(r)
+            n=input("enter name")
+            l.append(n)
+            m=float(input("enter marks"))
+            l.append(m)
+            csv_writer.writerow(l)
+            print("RECORD APPENDED..... IF YOU WANT TO SEE, SELECT OPTION 2..")
+
+def readrec():
+    with open("student.csv","r") as f:
+        csv_reader=csv.reader(f)
+        for row in csv_reader:
+            print(row)
+
+print("CSVFILE OPERATIONS")
+print("**********************")
+print("\t MENU")
+print("\t 1. WRITE RECORDS \n\t 2. READ RECORDS \n\t 3. APPEND RECORDS")
+print("\t 4. MODIFY RECORDS \n\t 5. SEARCH RECORDS \n\t 6. EXIT")
+while True:
+    ch=int(input("Enter your choice(1/2/3/4/5/6): "))
+    if ch==1:
+        writerec()
+    elif ch==2:
+        readrec()
+    elif ch==3:
+        appendrec()
+    elif ch==4:
+        updaterec()
+    elif ch==5:
+        searchrec()
+    else:
+        break
+print(" PROGRAM ENDS.....")
+
